@@ -359,6 +359,7 @@
             <button class="mode-btn" data-mode="single" onclick="setMode(this,'single')">仅单选</button>
             <button class="mode-btn" data-mode="multi" onclick="setMode(this,'multi')">仅多选</button>
             <button class="mode-btn" data-mode="random" onclick="setMode(this,'random')">随机50题</button>
+            <button class="mode-btn" data-mode="wrong" onclick="setMode(this,'wrong')" id="wrong-mode-btn" style="border-color:var(--error);color:var(--error)">错题练习</button>
         </div>
 
         <div class="stats-bar" id="stats-bar">
@@ -397,7 +398,7 @@
                     <div id="history-list"></div>
                 </div>
                 <div class="history-card" id="wrong-review-card" style="display:none">
-                    <div class="history-title"><span>错题回顾（最近100题）</span></div>
+                    <div class="history-title"><span>错题回顾</span><button class="btn btn-primary" style="padding:8px 18px;font-size:0.88rem" onclick="startWrongPractice()">错题重练</button></div>
                     <div id="wrong-review-list" style="max-height:400px;overflow-y:auto"></div>
                 </div>
             </div>
@@ -478,7 +479,7 @@ function loadCurrentSession() {
 function clearCurrentSession() { localStorage.removeItem(STORAGE_KEY + '_session'); }
 function recordCompletedSession() {
     const history = getHistory();
-    const labels = { all: '全部题目', single: '仅单选', multi: '仅多选', random: '随机50题' };
+    const labels = { all: '全部题目', single: '仅单选', multi: '仅多选', random: '随机50题', wrong: '错题练习' };
     history.unshift({
         mode: state.mode, modeLabel: labels[state.mode] || state.mode,
         total: state.pool.length, correct: state.correctCount,
@@ -539,6 +540,11 @@ function buildPool(mode) {
     let base = [...ALL_QUESTIONS, ...customQuestions];
     if (mode === 'single') return base.filter(q => q.type === '单选');
     if (mode === 'multi') return base.filter(q => q.type === '多选');
+    if (mode === 'wrong') {
+        const wrong = getWrongQuestions();
+        const wrongIds = new Set(Object.keys(wrong).map(Number));
+        return base.filter(q => wrongIds.has(q.id));
+    }
     if (mode === 'random') {
         const shuffled = [...base].sort(() => Math.random() - 0.5);
         return shuffled.slice(0, 50);
@@ -709,6 +715,7 @@ function judgeAnswer(selectedLetters) {
     `;
     
     updateStats();
+    updateWrongCount();
 }
 
 function nextQuestion() {
@@ -836,8 +843,17 @@ function saveManualQuestion() {
     document.getElementById('q-text-input').value = '';
     initAddPanel();
     updateStats();
+    updateWrongCount();
 }
 
+function updateWrongCount() {
+    const wrong = getWrongQuestions();
+    const btn = document.getElementById('wrong-mode-btn');
+    if (btn) {
+        const count = Object.keys(wrong).length;
+        btn.textContent = '错题练习' + (count > 0 ? ' (' + count + ')' : '');
+    }
+}
 
 // ====== 做题记录 ======
 function renderHistory() {
@@ -875,6 +891,17 @@ function renderWrongReview() {
         return '<div class="question-item"><div class="q-text">'+(q.question.length>80?q.question.substring(0,80)+'...':q.question)+'</div><div class="q-meta"><span class="q-type-tag '+(q.type==='单选'?'single':'multi')+'">'+q.type+'</span><span style="color:var(--error)">你选：'+w.userAnswer+'</span><span style="color:var(--success)">正确：'+w.correctAnswer+'</span>'+(w.count>1?'<span class="wrong-mark">错'+w.count+'次</span>':'')+'</div></div>';
     }).filter(Boolean).join('');
     list.innerHTML = '<p style="color:var(--text-muted);font-size:0.85rem;margin-bottom:8px">共 '+ids.length+' 道错题'+(ids.length>100?'（显示前100道）':'')+'</p><div class="question-list">'+items+'</div>';
+}
+
+function startWrongPractice() {
+    const wrong = getWrongQuestions();
+    const ids = Object.keys(wrong);
+    if (ids.length === 0) { alert('暂无错题记录'); return; }
+    document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
+    document.querySelector('[data-tab="practice"]').classList.add('active');
+    document.querySelectorAll('.panel').forEach(p => p.classList.remove('active'));
+    document.getElementById('practice-panel').classList.add('active');
+    setMode(document.getElementById('wrong-mode-btn'), 'wrong');
 }
 
 function clearAllHistory() {
