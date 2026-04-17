@@ -492,7 +492,7 @@ function renderPractice() {
                 <div class="question-number">第 ${state.currentIndex + 1} 题 / 共 ${state.pool.length} 题</div>
                 <span class="type-badge ${isMulti ? 'multi' : 'single'}">${q.type}题</span>
             </div>
-            <div class="practice-question">${q.text}</div>
+            <div class="practice-question">${q.question}</div>
             ${hintHtml}
             <div class="practice-options">${optHtml}</div>
             ${submitHtml}
@@ -631,7 +631,7 @@ function renderList() {
     
     let filtered = [...ALL_QUESTIONS, ...customQuestions];
     if (typeFilter !== 'all') filtered = filtered.filter(q => q.type === typeFilter);
-    if (keyword) filtered = filtered.filter(q => q.text.toLowerCase().includes(keyword) ||
+    if (keyword) filtered = filtered.filter(q => q.question.toLowerCase().includes(keyword) ||
         q.options.some(o => o.content.toLowerCase().includes(keyword)));
     
     const content = document.getElementById('list-content');
@@ -642,7 +642,7 @@ function renderList() {
     
     const items = filtered.slice(0, 100).map((q, i) => `
         <div class="question-item">
-            <div class="q-text">${i + 1}. ${q.text.length > 100 ? q.text.substring(0, 100) + '...' : q.text}</div>
+            <div class="q-text">${i + 1}. ${q.question.length > 100 ? q.question.substring(0, 100) + '...' : q.question}</div>
             <div class="q-meta">
                 <span class="q-type-tag ${q.type === '单选' ? 'single' : 'multi'}">${q.type}</span>
                 <span>${q.options.length} 个选项</span>
