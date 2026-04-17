@@ -540,14 +540,18 @@ function init() {
     if (bestSession) {
         const allQ = [...ALL_QUESTIONS, ...customQuestions];
         const restored = bestSession.poolIds.map(id => allQ.find(q => q.id === id)).filter(Boolean);
-        if (restored.length > 0 && bestSession.currentIndex < restored.length) {
+        if (restored.length > 0) {
+            // 如果上次已做完最后一题，显示完成界面
+            const ci = Math.min(bestSession.currentIndex, restored.length);
             state.pool = restored;
             state.mode = bestSession.mode || 'all';
-            state.currentIndex = bestSession.currentIndex;
+            state.currentIndex = ci;
             state.correctCount = bestSession.correctCount || 0;
+            state._justRestored = true; // 标记刚恢复，renderPractice时跳过重置
             document.querySelectorAll('.mode-btn').forEach(b => {
                 b.classList.toggle('active', b.dataset.mode === state.mode);
             });
+            console.log('[init] 恢复session:', state.mode, '题目:', state.currentIndex + 1, '/', state.pool.length, '正确:', state.correctCount);
         }
     }
 
@@ -555,6 +559,10 @@ function init() {
     renderPractice();
     updateStats();
 }
+
+// 页面关闭/切换时保存进度
+window.addEventListener('beforeunload', () => { saveCurrentSession(); });
+window.addEventListener('visibilitychange', () => { if (document.hidden) saveCurrentSession(); });
 
 function buildPool(mode) {
     let base = [...ALL_QUESTIONS, ...customQuestions];
