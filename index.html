@@ -464,19 +464,29 @@ function getHistory() {
 function saveHistory(h) { localStorage.setItem(STORAGE_KEY + '_history', JSON.stringify(h)); }
 function saveCurrentSession() {
     if (!state.pool.length) return;
-    localStorage.setItem(STORAGE_KEY + '_session', JSON.stringify({
+    const sessions = getAllModeSessions();
+    sessions[state.mode] = {
         mode: state.mode,
         poolIds: state.pool.map(q => q.id),
         currentIndex: state.currentIndex,
         correctCount: state.correctCount,
         answered: state.answered,
         timestamp: Date.now(),
-    }));
+    };
+    localStorage.setItem(STORAGE_KEY + '_session', JSON.stringify(sessions));
+}
+function getAllModeSessions() {
+    try { return JSON.parse(localStorage.getItem(STORAGE_KEY + '_session') || '{}'); } catch { return {}; }
 }
 function loadCurrentSession() {
-    try { const r = localStorage.getItem(STORAGE_KEY + '_session'); return r ? JSON.parse(r) : null; } catch { return null; }
+    const sessions = getAllModeSessions();
+    return sessions[state.mode] || null;
 }
-function clearCurrentSession() { localStorage.removeItem(STORAGE_KEY + '_session'); }
+function clearCurrentSession() {
+    const sessions = getAllModeSessions();
+    delete sessions[state.mode];
+    localStorage.setItem(STORAGE_KEY + '_session', JSON.stringify(sessions));
+}
 function recordCompletedSession() {
     const history = getHistory();
     const labels = { all: '全部题目', single: '仅单选', multi: '仅多选', random: '随机50题', wrong: '错题练习' };
@@ -516,16 +526,25 @@ function init() {
     document.getElementById('loaded-count').textContent = ALL_QUESTIONS.length;
     initAddPanel();
 
-    // 恢复上次未完成的练习
-    const session = loadCurrentSession();
-    if (session && session.poolIds && session.poolIds.length > 0) {
+    // 恢复上次未完成的练习（找最近活跃的模式）
+    const allSessions = getAllModeSessions();
+    let bestSession = null;
+    let bestTime = 0;
+    for (const m in allSessions) {
+        const s = allSessions[m];
+        if (s && s.poolIds && s.poolIds.length > 0 && s.timestamp > bestTime) {
+            bestTime = s.timestamp;
+            bestSession = { ...s, mode: m };
+        }
+    }
+    if (bestSession) {
         const allQ = [...ALL_QUESTIONS, ...customQuestions];
-        const restored = session.poolIds.map(id => allQ.find(q => q.id === id)).filter(Boolean);
-        if (restored.length > 0 && session.currentIndex < restored.length) {
+        const restored = bestSession.poolIds.map(id => allQ.find(q => q.id === id)).filter(Boolean);
+        if (restored.length > 0 && bestSession.currentIndex < restored.length) {
             state.pool = restored;
-            state.mode = session.mode || 'all';
-            state.currentIndex = session.currentIndex;
-            state.correctCount = session.correctCount || 0;
+            state.mode = bestSession.mode || 'all';
+            state.currentIndex = bestSession.currentIndex;
+            state.correctCount = bestSession.correctCount || 0;
             document.querySelectorAll('.mode-btn').forEach(b => {
                 b.classList.toggle('active', b.dataset.mode === state.mode);
             });
@@ -557,23 +576,52 @@ function setMode(btn, mode) {
     btn.classList.add('active');
 
     const sameMode = state.mode === mode;
-    state.mode = mode;
+    const prevMode = state.mode;
 
-    if (!sameMode && (state.currentIndex > 0 || state.correctCount > 0)) {
-        recordCompletedSession();
+    // 切换前：保存当前模式的进度
+    if (state.currentIndex > 0 || state.correctCount > 0) {
+        // 记录当前模式为已完成（在改 state.mode 之前）
+        const history = getHistory();
+        const labels = { all: '全部题目', single: '仅单选', multi: '仅多选', random: '随机50题', wrong: '错题练习' };
+        history.unshift({
+            mode: state.mode, modeLabel: labels[state.mode] || state.mode,
+            total: state.pool.length, correct: state.correctCount,
+            accuracy: state.pool.length > 0 ? Math.round(state.correctCount / state.pool.length * 100) : 0,
+            timestamp: Date.now(),
+        });
+        if (history.length > 50) history.length = 50;
+        saveHistory(history);
+        // 清除前一个模式的 session
+        const sessions = getAllModeSessions();
+        delete sessions[prevMode];
+        localStorage.setItem(STORAGE_KEY + '_session', JSON.stringify(sessions));
     }
 
+    // 切换到新模式
+    state.mode = mode;
     state.pool = buildPool(mode);
 
-    // 同模式切换：保留进度（比如刷新错题列表）
-    // 切换到不同模式：从第1题开始
-    if (!sameMode) {
+    // 尝试恢复目标模式的已有进度
+    const allSessions = getAllModeSessions();
+    const targetSession = allSessions[mode];
+    if (!sameMode && targetSession && targetSession.poolIds && targetSession.poolIds.length > 0) {
+        const allQ = [...ALL_QUESTIONS, ...customQuestions];
+        const restored = targetSession.poolIds.map(id => allQ.find(q => q.id === id)).filter(Boolean);
+        if (restored.length > 0 && targetSession.currentIndex < restored.length) {
+            state.pool = restored;
+            state.currentIndex = targetSession.currentIndex;
+            state.correctCount = targetSession.correctCount || 0;
+        } else {
+            state.currentIndex = 0;
+            state.correctCount = 0;
+        }
+    } else if (!sameMode) {
         state.currentIndex = 0;
         state.correctCount = 0;
-        state.answered = false;
-        state.selectedLetters = new Set();
-        clearCurrentSession();
     }
+
+    state.answered = false;
+    state.selectedLetters = new Set();
 
     renderPractice();
     updateStats();
