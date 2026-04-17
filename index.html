@@ -551,6 +551,7 @@ function init() {
         }
     }
 
+    updateWrongCount();
     renderPractice();
     updateStats();
 }
@@ -578,23 +579,9 @@ function setMode(btn, mode) {
     const sameMode = state.mode === mode;
     const prevMode = state.mode;
 
-    // 切换前：保存当前模式的进度
-    if (state.currentIndex > 0 || state.correctCount > 0) {
-        // 记录当前模式为已完成（在改 state.mode 之前）
-        const history = getHistory();
-        const labels = { all: '全部题目', single: '仅单选', multi: '仅多选', random: '随机50题', wrong: '错题练习' };
-        history.unshift({
-            mode: state.mode, modeLabel: labels[state.mode] || state.mode,
-            total: state.pool.length, correct: state.correctCount,
-            accuracy: state.pool.length > 0 ? Math.round(state.correctCount / state.pool.length * 100) : 0,
-            timestamp: Date.now(),
-        });
-        if (history.length > 50) history.length = 50;
-        saveHistory(history);
-        // 清除前一个模式的 session
-        const sessions = getAllModeSessions();
-        delete sessions[prevMode];
-        localStorage.setItem(STORAGE_KEY + '_session', JSON.stringify(sessions));
+    // 切换前：保存当前模式的进度到 localStorage（保留，不删除！）
+    if (state.currentIndex >= 0 && state.pool.length > 0) {
+        saveCurrentSession();
     }
 
     // 切换到新模式
@@ -622,7 +609,7 @@ function setMode(btn, mode) {
 
     state.answered = false;
     state.selectedLetters = new Set();
-
+    updateWrongCount();
     renderPractice();
     updateStats();
 }
@@ -784,6 +771,7 @@ function judgeAnswer(selectedLetters) {
 
     updateStats();
     updateWrongCount();
+    saveCurrentSession();
 }
 
 function nextQuestion() {
@@ -797,13 +785,17 @@ function restartPractice() {
     recordCompletedSession();
     state.currentIndex = 0; state.correctCount = 0;
     state.answered = false; state.selectedLetters = new Set();
+    state.pool = buildPool(state.mode);
+    saveCurrentSession();
     renderPractice();
+    updateStats();
 }
 function restartShuffle() {
     recordCompletedSession();
     state.pool = [...state.pool].sort(() => Math.random() - 0.5);
     state.currentIndex = 0; state.correctCount = 0;
     state.answered = false; state.selectedLetters = new Set();
+    saveCurrentSession();
     renderPractice();
 }
 
