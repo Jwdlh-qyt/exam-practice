@@ -555,15 +555,28 @@ function buildPool(mode) {
 function setMode(btn, mode) {
     document.querySelectorAll('.mode-btn').forEach(b => b.classList.remove('active'));
     btn.classList.add('active');
+
+    const sameMode = state.mode === mode;
     state.mode = mode;
-    if (state.currentIndex > 0 || state.correctCount > 0) recordCompletedSession();
+
+    if (!sameMode && (state.currentIndex > 0 || state.correctCount > 0)) {
+        recordCompletedSession();
+    }
+
     state.pool = buildPool(mode);
-    state.currentIndex = 0;
-    state.correctCount = 0;
-    state.answered = false;
-    state.selectedLetters = new Set();
-    clearCurrentSession();
-    renderPractice(); updateStats();
+
+    // 同模式切换：保留进度（比如刷新错题列表）
+    // 切换到不同模式：从第1题开始
+    if (!sameMode) {
+        state.currentIndex = 0;
+        state.correctCount = 0;
+        state.answered = false;
+        state.selectedLetters = new Set();
+        clearCurrentSession();
+    }
+
+    renderPractice();
+    updateStats();
 }
 
 // ====== 练习逻辑 ======
@@ -714,6 +727,13 @@ function judgeAnswer(selectedLetters) {
         <div class="result-answer">正确答案：<br>${correctDisplay}</div>
     `;
     
+    // 记录错题/正确
+    if (isCorrect) {
+        markQuestionCorrect(q.id);
+    } else {
+        markQuestionWrong(q.id, selectedLetters.join(''), q.answer);
+    }
+
     updateStats();
     updateWrongCount();
 }
