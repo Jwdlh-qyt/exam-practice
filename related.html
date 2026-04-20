@@ -445,6 +445,189 @@ body {
 .topic-item .expand-arrow { font-size: 0.7rem; transition: transform 0.2s ease; color: var(--text-muted); }
 .topic-item.expanded .expand-arrow { transform: rotate(90deg); }
 
+
+/* Single-question mode styles */
+.practice-card {
+    background: var(--card);
+    border-radius: var(--radius);
+    padding: 28px;
+    border: 1px solid var(--border);
+    min-height: 200px;
+}
+
+.question-meta-row {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 16px;
+    flex-wrap: wrap;
+    gap: 8px;
+}
+
+.question-number {
+    font-weight: 700;
+    color: var(--accent);
+    font-size: 1.1em;
+}
+
+.type-badge {
+    display: inline-block;
+    padding: 3px 12px;
+    border-radius: 12px;
+    font-size: 0.78em;
+    font-weight: 600;
+}
+
+.type-badge.single { background: rgba(59,130,246,0.15); color: #60a5fa; }
+.type-badge.multi { background: rgba(168,85,247,0.15); color: #c084fc; }
+
+.practice-question {
+    font-size: 1.08em;
+    line-height: 1.9;
+    margin-bottom: 20px;
+    color: var(--text);
+}
+
+.practice-options {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    margin-bottom: 16px;
+}
+
+.practice-option {
+    padding: 14px 18px;
+    border-radius: 10px;
+    border: 1px solid var(--border);
+    cursor: pointer;
+    transition: all 0.2s;
+    display: flex;
+    gap: 12px;
+    align-items: flex-start;
+    font-size: 0.97em;
+    background: transparent;
+    width: 100%;
+    text-align: left;
+    color: var(--text);
+}
+
+.practice-option:hover { border-color: var(--accent); background: var(--accent-dim); }
+.practice-option.selected { border-color: var(--accent); background: var(--accent-dim); }
+.practice-option.correct { border-color: var(--correct); background: var(--correct-dim); }
+.practice-option.wrong { border-color: var(--wrong); background: var(--wrong-dim); }
+.practice-option.disabled { pointer-events: none; }
+
+.option-letter {
+    width: 30px;
+    height: 30px;
+    border-radius: 50%;
+    background: var(--bg3);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: 700;
+    font-size: 0.9em;
+    flex-shrink: 0;
+    transition: all 0.2s;
+}
+
+.practice-option.selected .option-letter { background: var(--accent); color: #fff; }
+.practice-option.correct .option-letter { background: var(--correct); color: #fff; }
+.practice-option.wrong .option-letter { background: var(--wrong); color: #fff; }
+
+.option-text { flex: 1; line-height: 1.6; }
+
+.hint-row { margin-bottom: 12px; }
+.hint-text { color: var(--text3); font-size: 0.85em; }
+
+.feedback-box {
+    display: none;
+    padding: 16px 20px;
+    border-radius: 10px;
+    margin-bottom: 16px;
+    font-size: 0.95em;
+}
+.feedback-box.correct { background: var(--correct-dim); border: 1px solid var(--correct); }
+.feedback-box.wrong { background: var(--wrong-dim); border: 1px solid var(--wrong); }
+.feedback-title { font-weight: 700; font-size: 1.05em; margin-bottom: 4px; }
+.feedback-answer { font-size: 0.9em; color: var(--text2); }
+
+.explanation-toggle {
+    background: none;
+    border: 1px solid var(--border);
+    color: var(--text2);
+    padding: 6px 14px;
+    border-radius: 8px;
+    cursor: pointer;
+    font-size: 0.85em;
+    margin-bottom: 8px;
+    transition: all 0.2s;
+}
+.explanation-toggle:hover { border-color: var(--accent); color: var(--accent); }
+
+.explanation-box {
+    display: none;
+    padding: 16px;
+    background: var(--bg2);
+    border-radius: 8px;
+    border-left: 3px solid var(--accent);
+    font-size: 0.9em;
+    line-height: 1.8;
+    color: var(--text2);
+    margin-bottom: 16px;
+}
+
+.btn-row {
+    display: flex;
+    gap: 10px;
+    flex-wrap: wrap;
+    margin-top: 8px;
+}
+
+.btn {
+    padding: 10px 22px;
+    border-radius: 8px;
+    border: none;
+    font-size: 0.95em;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.2s;
+}
+.btn-primary { background: var(--accent); color: #fff; }
+.btn-primary:hover { background: var(--accent2); }
+.btn-primary:disabled { opacity: 0.4; cursor: default; }
+.btn-secondary { background: var(--bg3); color: var(--text2); border: 1px solid var(--border); }
+.btn-secondary:hover { border-color: var(--accent); color: var(--accent); }
+.btn-secondary:disabled { opacity: 0.4; cursor: default; }
+
+.complete-screen {
+    text-align: center;
+    padding: 50px 20px;
+}
+.complete-emoji { font-size: 4rem; margin-bottom: 16px; }
+.score-ring {
+    font-size: 3rem;
+    font-weight: 800;
+    color: var(--accent);
+    margin-bottom: 8px;
+}
+.complete-title { font-size: 1.3em; font-weight: 700; margin-bottom: 8px; }
+.complete-sub { color: var(--text3); font-size: 0.95em; margin-bottom: 20px; }
+
+.topic-display {
+    font-size: 0.8em;
+    color: var(--text3);
+    margin-bottom: 12px;
+}
+
+.progress-info { display: flex; justify-content: space-between; margin-bottom: 6px; font-size: 0.9em; color: var(--text2); }
+
+@media (max-width: 640px) {
+    .practice-card { padding: 18px; }
+    .btn-row { flex-direction: column; }
+    .btn { width: 100%; text-align: center; }
+}
+
 </style>
 </head>
 <body>
@@ -465,30 +648,11 @@ body {
 
   <!-- Practice Tab -->
   <div id="tab-practice" class="tab-content active">
-    <!-- Scope filter -->
-    <div class="filter-bar">
-      <button class="filter-btn active" onclick="setScope('all',this)">全部({ALL_COUNT})</button>
-      <button class="filter-btn" onclick="setScope('single',this)">单选({SINGLE_COUNT})</button>
-      <button class="filter-btn" onclick="setScope('multi',this)">多选({MULTI_COUNT})</button>
-      <button class="filter-btn" onclick="setScope('wrong',this)">错题重练</button>
-      <button class="filter-btn" onclick="setScope('random50',this)">随机50题</button>
-      <button class="filter-btn" onclick="toggleTopicFilter()">按专题</button>
-    </div>
-
-    <!-- Topic filter -->
-    <div id="topic-filter" class="topic-filter">
-      <div class="topic-grid" id="topic-grid"></div>
-    </div>
-
     <!-- Stats bar -->
     <div class="stats-bar">
       <div class="stat-item">
-        <div class="stat-value" id="stat-total">0</div>
-        <div class="stat-label">总题数</div>
-      </div>
-      <div class="stat-item">
         <div class="stat-value" id="stat-done">0</div>
-        <div class="stat-label">已做</div>
+        <div class="stat-label">已练习</div>
       </div>
       <div class="stat-item">
         <div class="stat-value" id="stat-correct" style="color:var(--correct)">0</div>
@@ -499,22 +663,43 @@ body {
         <div class="stat-label">错误</div>
       </div>
       <div class="stat-item">
-        <div class="stat-value" id="stat-rate">0%</div>
+        <div class="stat-value" id="stat-rate">—</div>
         <div class="stat-label">正确率</div>
       </div>
+      <div class="stat-item">
+        <div class="stat-value" id="stat-remain">—</div>
+        <div class="stat-label">剩余</div>
+      </div>
+    </div>
+
+    <!-- Scope filter -->
+    <div class="filter-bar">
+      <button class="filter-btn active" onclick="setScope('all',this)">全部题目</button>
+      <button class="filter-btn" onclick="setScope('single',this)">仅单选</button>
+      <button class="filter-btn" onclick="setScope('multi',this)">仅多选</button>
+      <button class="filter-btn" onclick="setScope('wrong',this)">错题重练</button>
+      <button class="filter-btn" onclick="setScope('random50',this)">随机50题</button>
+      <button class="filter-btn" onclick="toggleTopicFilter()">按专题</button>
+    </div>
+
+    <!-- Topic filter -->
+    <div id="topic-filter" class="topic-filter">
+      <div class="topic-grid" id="topic-grid"></div>
     </div>
 
     <!-- Progress -->
     <div class="progress-wrap">
-      <div class="progress-bar"><div class="progress-fill" id="progress-fill" style="width:0%"></div></div>
-      <div class="progress-text">
-        <span id="progress-label">0/0</span>
-        <span id="progress-pct">0%</span>
+      <div class="progress-info" style="display:flex;justify-content:space-between;margin-bottom:6px;font-size:0.9em;color:var(--text2)">
+        <span id="q-index-label">第 1 题</span>
+        <span id="q-total-label">共 0 题</span>
       </div>
+      <div class="progress-bar"><div class="progress-fill" id="progress-fill" style="width:0%"></div></div>
     </div>
 
-    <!-- Questions -->
-    <div id="questions-container"></div>
+    <!-- Single question area -->
+    <div class="practice-card" id="practice-area">
+      <!-- 题目动态渲染 -->
+    </div>
   </div>
 
   <!-- Bank Tab -->
@@ -532,7 +717,7 @@ body {
   </div>
 </div>
 
-<button class="scroll-top" id="scroll-top" onclick="window.scrollTo({top:0,behavior:'smooth'})">↑</button>
+
 
 <script>
 const ALL_QUESTIONS = [
@@ -1391,434 +1576,631 @@ const MULTI_COUNT = ALL_QUESTIONS.filter(q=>q.type==='multiple').length;
 // Replace placeholders
 document.querySelector('.header p').textContent = '10大专题 · ' + TOTAL + '道题 · 含答案解析';
 
-// State
-let currentScope = 'all';
+// ============================================================
+// 状态管理
+// ============================================================
+let state = {
+    filter: 'all',
+    queue: [],       // 当前练习队列（id列表）
+    queuePos: 0,     // 当前位置
+    answered: {},    // id -> {correct, selected}
+    wrongIds: new Set(),
+    sessionCorrect: 0,
+    sessionWrong: 0,
+};
+
 let selectedTopic = null;
-let practiceList = [];
-let answered = {};  // id -> {selected:[],correct:bool}
-let wrongSet = new Set(JSON.parse(localStorage.getItem('rl_wrong') || '[]'));
-
-function saveWrong() {
-  localStorage.setItem('rl_wrong', JSON.stringify([...wrongSet]));
-}
-
-function getFilteredQuestions() {
-  let list = [...ALL_QUESTIONS];
-  if (currentScope === 'single') list = list.filter(q=>q.type==='single');
-  else if (currentScope === 'multi') list = list.filter(q=>q.type==='multiple');
-  else if (currentScope === 'wrong') list = ALL_QUESTIONS.filter(q=>wrongSet.has(q.id));
-  else if (currentScope === 'random50') {
-    list = [...ALL_QUESTIONS].sort(()=>Math.random()-0.5).slice(0,50);
-  }
-  if (selectedTopic !== null) {
-    list = list.filter(q=>q.topic === selectedTopic);
-  }
-  if (selectedChapter !== null) {
-    list = list.filter(q=>q.chapter === selectedChapter);
-  }
-  return list;
-}
-
-function setScope(scope, btn) {
-  currentScope = scope;
-  document.querySelectorAll('.filter-bar .filter-btn').forEach(b=>b.classList.remove('active'));
-  btn.classList.add('active');
-  // Close topic filter unless it's topic mode
-  if (scope !== 'topic') {
-    // Keep topic filter open/close state
-  }
-  startPractice();
-}
-
-function toggleTopicFilter() {
-  const el = document.getElementById('topic-filter');
-  el.classList.toggle('open');
-}
-
 let selectedChapter = null;
 
-function selectTopic(name, el) {
-  if (selectedTopic === name) {
-    // Toggle off: deselect topic
-    selectedTopic = null;
-    selectedChapter = null;
-    el.classList.remove('active');
-    el.classList.remove('expanded');
-    // Hide chapters
-    const chGrid = el.nextElementSibling;
-    if (chGrid && chGrid.classList.contains('chapter-grid')) chGrid.remove();
-  } else {
-    selectedTopic = name;
-    selectedChapter = null;
-    document.querySelectorAll('.topic-item').forEach(e => {
-      e.classList.remove('active');
-      e.classList.remove('expanded');
-      const ch = e.nextElementSibling;
-      if (ch && ch.classList.contains('chapter-grid')) ch.remove();
-    });
-    el.classList.add('active');
-    // Toggle expand chapters
-    const isExpanded = el.classList.contains('expanded');
-    if (!isExpanded) {
-      el.classList.add('expanded');
-      const topic = TOPICS.find(t => t.name === name);
-      if (topic && topic.chapters && topic.chapters.length > 0) {
-        let chHtml = '<div class="chapter-grid">';
-        topic.chapters.forEach(ch => {
-          chHtml += '<div class="chapter-item" onclick="selectChapter(\'' + ch.name.replace(/'/g, "\\'") + '\', this, event)">';
-          chHtml += '<span>' + ch.name + '</span>';
-          chHtml += '<span style="color:var(--text-muted);font-size:0.8rem">' + ch.count + '题</span>';
-          chHtml += '</div>';
-        });
-        chHtml += '</div>';
-        el.insertAdjacentHTML('afterend', chHtml);
-      }
-    } else {
-      el.classList.remove('expanded');
-      const chGrid = el.nextElementSibling;
-      if (chGrid && chGrid.classList.contains('chapter-grid')) chGrid.remove();
+// 从 localStorage 恢复
+function loadState() {
+    try {
+        const saved = localStorage.getItem('related_law_state');
+        if (saved) {
+            const s = JSON.parse(saved);
+            state.wrongIds = new Set(s.wrongIds || []);
+            state.correctIds = new Set(s.correctIds || []);
+            state.answered = s.answered || {};
+            // 恢复上次做题位置
+            if (s.filter) state.filter = s.filter;
+            if (s.queue && s.queue.length > 0) {
+                state.queue = s.queue;
+                state.queuePos = s.queuePos || 0;
+                // 确保位置不超出范围
+                if (state.queuePos >= state.queue.length) {
+                    state.queuePos = 0;
+                }
+            }
+            if (s.selectedTopic) selectedTopic = s.selectedTopic;
+            if (s.selectedChapter) selectedChapter = s.selectedChapter;
+        }
+    } catch(e) {}
+}
+
+function saveState() {
+    try {
+        localStorage.setItem('related_law_state', JSON.stringify({
+            wrongIds: [...state.wrongIds],
+            correctIds: [...(state.correctIds || [])],
+            answered: state.answered,
+            filter: state.filter,
+            queue: state.queue,
+            queuePos: state.queuePos,
+            selectedTopic: selectedTopic,
+            selectedChapter: selectedChapter,
+        }));
+    } catch(e) {}
+}
+
+// ============================================================
+// 队列构建
+// ============================================================
+function getFilteredQuestions() {
+    let list = [...ALL_QUESTIONS];
+    if (state.filter === 'single') list = list.filter(q => q.type === 'single');
+    else if (state.filter === 'multi') list = list.filter(q => q.type === 'multiple');
+    else if (state.filter === 'wrong') list = ALL_QUESTIONS.filter(q => state.wrongIds.has(q.id));
+    else if (state.filter === 'random50') {
+        list = [...ALL_QUESTIONS].sort(() => Math.random() - 0.5).slice(0, 50);
     }
-  }
-  // Deactivate scope buttons
-  document.querySelectorAll('.filter-bar .filter-btn').forEach(b => b.classList.remove('active'));
-  startPractice();
+    if (selectedTopic !== null) {
+        list = list.filter(q => q.topic === selectedTopic);
+    }
+    if (selectedChapter !== null) {
+        list = list.filter(q => q.chapter === selectedChapter);
+    }
+    return list;
 }
 
-function selectChapter(chapterName, el, event) {
-  event.stopPropagation();
-  if (selectedChapter === chapterName) {
-    selectedChapter = null;
-    el.classList.remove('active');
-  } else {
-    selectedChapter = chapterName;
-    document.querySelectorAll('.chapter-item').forEach(e => e.classList.remove('active'));
-    el.classList.add('active');
-  }
-  startPractice();
+function buildQueueIds() {
+    return getFilteredQuestions().map(q => q.id);
 }
 
-function startPractice() {
-  practiceList = getFilteredQuestions();
-  renderQuestions();
-  updateStats();
+function getQuestionById(id) {
+    return ALL_QUESTIONS.find(q => q.id === id);
 }
 
-function renderQuestions() {
-  const container = document.getElementById('questions-container');
-  if (practiceList.length === 0) {
-    container.innerHTML = '<div style="text-align:center;padding:60px;color:var(--text3)"><p style="font-size:1.2em;margin-bottom:8px">没有可练习的题目</p><p>试试其他筛选条件</p></div>';
-    return;
-  }
-  let html = '';
-  practiceList.forEach((q, idx) => {
-    const a = answered[q.id];
-    const isAnswered = !!a;
-    const tagClass = q.type === 'multiple' ? 'multi' : 'single';
-    const tagText = q.type === 'multiple' ? '多选' : '单选';
+// ============================================================
+// 渲染单题
+// ============================================================
+function escHtml(str) {
+    if (!str) return '';
+    return str.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;');
+}
+
+let selectedOptions = [];
+
+function renderQuestion(qid) {
+    const q = getQuestionById(qid);
+    if (!q) { renderComplete(); return; }
+
+    const pos = state.queuePos + 1;
+    const total = state.queue.length;
+    const pct = ((pos - 1) / total * 100).toFixed(1);
+
+    document.getElementById('q-index-label').textContent = '第 ' + pos + ' 题';
+    document.getElementById('q-total-label').textContent = '共 ' + total + ' 题';
+    document.getElementById('progress-fill').style.width = pct + '%';
+
     const isMulti = q.type === 'multiple';
+    const typeLabel = isMulti ? '多选' : '单选';
+    const typeCls = isMulti ? 'multi' : 'single';
 
     // Topic display
     let topicDisplay = q.topic || '';
     if (q.chapter) topicDisplay += ' > ' + q.chapter;
     if (q.section) topicDisplay += ' > ' + q.section;
 
-    html += '<div class="q-card" id="qcard-' + q.id + '">';
-    html += '<div class="q-header">';
-    html += '<span class="q-num">#' + q.id + '</span>';
-    html += '<span class="q-tag ' + tagClass + '">' + tagText + '</span>';
-    html += '</div>';
-    if (topicDisplay) html += '<div class="q-topic">' + topicDisplay + '</div>';
-    html += '<div class="q-text">' + escapeHtml(q.question) + '</div>';
+    let optHtml = '';
+    for (const [k, v] of Object.entries(q.options)) {
+        optHtml += '<button class="practice-option" data-key="' + k + '" onclick="selectOption(this, \'' + k + '\', ' + isMulti + ')">';
+        optHtml += '<span class="option-letter">' + k + '</span>';
+        optHtml += '<span class="option-text">' + escHtml(v) + '</span>';
+        optHtml += '</button>';
+    }
 
-    // Options
-    html += '<div class="options" id="opts-' + q.id + '">';
-    ['A','B','C','D'].forEach(letter => {
-      if (!q.options[letter]) return;
-      let cls = 'option';
-      if (isAnswered) {
-        cls += ' disabled';
-        if (a.selected.includes(letter)) cls += a.correct ? ' correct' : ' wrong';
-        else if (q.answer && q.answer.includes(letter)) cls += ' correct';
-      }
-      html += '<div class="' + cls + '" onclick="selectOption(' + q.id + ',\'' + letter + '\')">';
-      html += '<div class="opt-letter">' + letter + '</div>';
-      html += '<div class="opt-text">' + escapeHtml(q.options[letter]) + '</div>';
-      html += '</div>';
+    const hasExp = q.explanation && q.explanation.trim().length > 3;
+
+    document.getElementById('practice-area').innerHTML = 
+        '<div class="question-meta-row">' +
+            '<span class="question-number">#' + q.id + ' / ' + ALL_QUESTIONS.length + '</span>' +
+            '<span class="type-badge ' + typeCls + '">' + typeLabel + '</span>' +
+        '</div>' +
+        (topicDisplay ? '<div class="topic-display">' + topicDisplay + '</div>' : '') +
+        '<div class="practice-question">' + escHtml(q.question) + '</div>' +
+        (isMulti ? '<div class="hint-row"><span class="hint-text">💡 多选题：选择所有正确选项后点击"提交答案"</span></div>' : '') +
+        '<div class="practice-options" id="options-container">' +
+            optHtml +
+        '</div>' +
+        '<div class="feedback-box" id="feedback-box">' +
+            '<div class="feedback-title" id="feedback-title"></div>' +
+            '<div class="feedback-answer" id="feedback-answer"></div>' +
+            (hasExp ? '<button class="explanation-toggle" onclick="toggleExp()">查看解析 ▾</button>' : '') +
+            (hasExp ? '<div class="explanation-box" id="exp-box">' + escHtml(q.explanation) + '</div>' : '') +
+        '</div>' +
+        '<div class="btn-row">' +
+            (isMulti ? '<button class="btn btn-primary" id="submit-btn" onclick="submitMulti()">提交答案</button>' : '') +
+            '<button class="btn btn-secondary" onclick="prevQuestion()" ' + (state.queuePos === 0 ? 'disabled style="opacity:0.4"' : '') + '>← 上一题</button>' +
+            '<button class="btn btn-secondary" onclick="nextQuestion()">跳过 →</button>' +
+        '</div>';
+
+    // 恢复已答题状态
+    const prevAnswer = state.answered[qid];
+    if (prevAnswer) {
+        // 禁用选项
+        document.querySelectorAll('.practice-option').forEach(o => o.classList.add('disabled'));
+        const correct = q.answer || '';
+        const correctArr = correct.split('');
+        document.querySelectorAll('.practice-option').forEach(o => {
+            const k = o.dataset.key;
+            const wasSelected = prevAnswer.selected.includes(k);
+            const isCorrectOpt = correctArr.includes(k);
+            if (wasSelected) o.classList.add('selected');
+            if (isCorrectOpt) o.classList.add('correct');
+            else if (wasSelected && !isCorrectOpt) o.classList.add('wrong');
+        });
+        // 显示反馈
+        const fb = document.getElementById('feedback-box');
+        fb.style.display = 'block';
+        if (prevAnswer.correct) {
+            fb.className = 'feedback-box correct';
+            document.getElementById('feedback-title').textContent = '✅ 回答正确！';
+            document.getElementById('feedback-answer').textContent = '正确答案：' + correct;
+        } else {
+            fb.className = 'feedback-box wrong';
+            document.getElementById('feedback-title').textContent = '❌ 回答错误';
+            document.getElementById('feedback-answer').textContent = '正确答案：' + correct + '   你的答案：' + prevAnswer.selected.sort().join('');
+        }
+        if (document.getElementById('submit-btn')) {
+            document.getElementById('submit-btn').disabled = true;
+        }
+    }
+
+    updateStats();
+}
+
+// ============================================================
+// 选项交互
+// ============================================================
+function selectOption(el, key, isMulti) {
+    if (el.classList.contains('disabled')) return;
+    const qid = state.queue[state.queuePos];
+    const prevAnswer = state.answered[qid];
+    if (prevAnswer) return;
+
+    if (!isMulti) {
+        // 单选：直接判断
+        document.querySelectorAll('.practice-option').forEach(o => o.classList.remove('selected'));
+        el.classList.add('selected');
+        judgeAnswer([key]);
+    } else {
+        // 多选：切换选中
+        el.classList.toggle('selected');
+        selectedOptions = [];
+        document.querySelectorAll('.practice-option.selected').forEach(o => {
+            selectedOptions.push(o.dataset.key);
+        });
+    }
+}
+
+function submitMulti() {
+    if (selectedOptions.length === 0) { alert('请至少选择一个选项'); return; }
+    judgeAnswer(selectedOptions);
+}
+
+function judgeAnswer(selected) {
+    const qid = state.queue[state.queuePos];
+    const q = getQuestionById(qid);
+
+    // 禁用所有选项
+    document.querySelectorAll('.practice-option').forEach(o => o.classList.add('disabled'));
+    if (document.getElementById('submit-btn')) {
+        document.getElementById('submit-btn').disabled = true;
+    }
+
+    const correct = q.answer || '';
+    const correctArr = correct.split('');
+    const isCorrect = selected.sort().join('') === correctArr.sort().join('');
+
+    // 标记颜色
+    document.querySelectorAll('.practice-option').forEach(o => {
+        const k = o.dataset.key;
+        const wasSelected = selected.includes(k);
+        const isCorrectOpt = correctArr.includes(k);
+        if (isCorrectOpt) o.classList.add('correct');
+        else if (wasSelected && !isCorrectOpt) o.classList.add('wrong');
     });
-    html += '</div>';
 
-    // Submit button for multi-choice
-    if (isMulti && !isAnswered) {
-      html += '<button class="submit-btn" id="submit-' + q.id + '" disabled onclick="submitMulti(' + q.id + ')">提交答案</button>';
+    // 反馈
+    const fb = document.getElementById('feedback-box');
+    fb.style.display = 'block';
+    if (isCorrect) {
+        fb.className = 'feedback-box correct';
+        document.getElementById('feedback-title').textContent = '✅ 回答正确！';
+        document.getElementById('feedback-answer').textContent = '正确答案：' + correct;
+        state.sessionCorrect++;
+        state.wrongIds.delete(qid);
+    } else {
+        fb.className = 'feedback-box wrong';
+        document.getElementById('feedback-title').textContent = '❌ 回答错误';
+        document.getElementById('feedback-answer').textContent = '正确答案：' + correct + '   你的答案：' + selected.sort().join('');
+        state.sessionWrong++;
+        state.wrongIds.add(qid);
     }
 
-    // Result & Explanation
-    if (isAnswered) {
-      if (a.correct) {
-        html += '<div class="result-indicator correct">✓ 回答正确</div>';
-      } else {
-        html += '<div class="result-indicator wrong">✗ 回答错误，正确答案：' + (q.answer||'?') + '</div>';
-      }
+    state.answered[qid] = { correct: isCorrect, selected };
+    saveState();
+    updateStats();
+    selectedOptions = [];
+}
+
+function toggleExp() {
+    const box = document.getElementById('exp-box');
+    if (!box) return;
+    const btn = document.querySelector('.explanation-toggle');
+    if (box.style.display === 'block') {
+        box.style.display = 'none';
+        btn.textContent = '查看解析 ▾';
+    } else {
+        box.style.display = 'block';
+        btn.textContent = '收起解析 ▴';
+    }
+}
+
+// ============================================================
+// 导航
+// ============================================================
+function nextQuestion() {
+    state.queuePos++;
+    if (state.queuePos >= state.queue.length) {
+        renderComplete();
+    } else {
+        selectedOptions = [];
+        renderQuestion(state.queue[state.queuePos]);
+        saveState();
+    }
+}
+
+function prevQuestion() {
+    if (state.queuePos <= 0) return;
+    state.queuePos--;
+    selectedOptions = [];
+    renderQuestion(state.queue[state.queuePos]);
+    saveState();
+}
+
+function renderComplete() {
+    const total = state.queue.length;
+    const c = state.sessionCorrect;
+    const w = state.sessionWrong;
+    const acc = (c + w > 0) ? Math.round(c / (c + w) * 100) : 0;
+
+    document.getElementById('practice-area').innerHTML = 
+        '<div class="complete-screen">' +
+            '<div class="complete-emoji">🎉</div>' +
+            '<div class="score-ring">' + acc + '%</div>' +
+            '<div class="complete-title">本轮练习完成！</div>' +
+            '<div class="complete-sub">答题 ' + (c+w) + ' 道 · 正确 ' + c + ' · 错误 ' + w + ' · 正确率 ' + acc + '%</div>' +
+            '<div class="btn-row" style="justify-content:center">' +
+                '<button class="btn btn-primary" onclick="restartPractice()">🔄 重新开始</button>' +
+                '<button class="btn btn-secondary" onclick="setScope(\'wrong\', null)">📌 练习错题</button>' +
+            '</div>' +
+        '</div>';
+    updateStatsPanel();
+}
+
+// ============================================================
+// 过滤器
+// ============================================================
+function setScope(scope, btn) {
+    state.filter = scope;
+    if (btn) {
+        document.querySelectorAll('.filter-bar .filter-btn').forEach(b => b.classList.remove('active'));
+        btn.classList.add('active');
+    } else {
+        // 错题按钮 - 从完成页面调用
+        document.querySelectorAll('.filter-bar .filter-btn').forEach(b => b.classList.remove('active'));
+        document.querySelectorAll('.filter-bar .filter-btn').forEach(b => {
+            if (b.textContent.includes('错题')) b.classList.add('active');
+        });
+    }
+    restartPractice();
+}
+
+function restartPractice() {
+    state.queue = buildQueueIds();
+    state.queuePos = 0;
+    state.sessionCorrect = 0;
+    state.sessionWrong = 0;
+    selectedOptions = [];
+
+    if (state.queue.length === 0) {
+        document.getElementById('practice-area').innerHTML = 
+            '<div style="text-align:center; padding:60px 20px; color:var(--text2)">' +
+                '<div style="font-size:3rem; margin-bottom:16px">📭</div>' +
+                '<div style="font-size:1.1rem">' + (state.filter === 'wrong' ? '暂无错题，继续加油！' : '没有符合条件的题目') + '</div>' +
+            '</div>';
+        document.getElementById('q-index-label').textContent = '第 0 题';
+        document.getElementById('q-total-label').textContent = '共 0 题';
+        return;
     }
 
-    if (q.explanation) {
-      html += '<div class="explanation" id="expl-' + q.id + '" style="display:' + (isAnswered ? 'block' : 'none') + '">';
-      html += '<div class="ans-label">答案：' + (q.answer||'暂无') + '</div>';
-      html += '<div>' + escapeHtml(q.explanation) + '</div>';
-      html += '</div>';
-    }
-
-    html += '</div>';
-  });
-  container.innerHTML = html;
+    document.getElementById('q-total-label').textContent = '共 ' + state.queue.length + ' 题';
+    renderQuestion(state.queue[0]);
+    updateStats();
+    saveState();
 }
 
-function selectOption(qid, letter) {
-  if (answered[qid]) return;
-  const q = ALL_QUESTIONS.find(x=>x.id===qid);
-  if (!q) return;
-
-  if (!answered[qid]) answered[qid] = {selected:[], correct:null};
-
-  if (q.type === 'multiple') {
-    let sel = answered[qid].selected;
-    let idx = sel.indexOf(letter);
-    if (idx >= 0) sel.splice(idx, 1);
-    else sel.push(letter);
-    // Enable/disable submit
-    const btn = document.getElementById('submit-' + qid);
-    if (btn) btn.disabled = sel.length === 0;
-    // Update visual
-    updateOptionVisual(qid);
-  } else {
-    // Single choice - immediate check
-    answered[qid].selected = [letter];
-    checkAnswer(qid);
-  }
-}
-
-function updateOptionVisual(qid) {
-  const sel = answered[qid]?.selected || [];
-  const opts = document.getElementById('opts-' + qid);
-  if (!opts) return;
-  opts.querySelectorAll('.option').forEach(el => {
-    const letter = el.querySelector('.opt-letter').textContent;
-    el.classList.toggle('selected', sel.includes(letter));
-  });
-}
-
-function submitMulti(qid) {
-  if (answered[qid]?.selected?.length > 0) {
-    checkAnswer(qid);
-  }
-}
-
-function checkAnswer(qid) {
-  const q = ALL_QUESTIONS.find(x=>x.id===qid);
-  if (!q || !answered[qid]) return;
-
-  const sel = answered[qid].selected.sort().join('');
-  const ans = (q.answer || '').toUpperCase().split('').sort().join('');
-  answered[qid].correct = (sel === ans);
-
-  if (!answered[qid].correct) {
-    wrongSet.add(qid);
-  } else {
-    wrongSet.delete(qid);
-  }
-  saveWrong();
-
-  // Re-render this question
-  renderQuestions();
-  updateStats();
-
-  // Show explanation
-  const expl = document.getElementById('expl-' + qid);
-  if (expl) expl.style.display = 'block';
-}
-
+// ============================================================
+// 统计
+// ============================================================
 function updateStats() {
-  const scopeAnswered = practiceList.filter(q=>answered[q.id]);
-  const correctCount = scopeAnswered.filter(q=>answered[q.id]?.correct);
-  const wrongCount = scopeAnswered.filter(q=>answered[q.id] && !answered[q.id]?.correct);
-  const rate = scopeAnswered.length > 0 ? Math.round(correctCount.length / scopeAnswered.length * 100) : 0;
-  const pct = practiceList.length > 0 ? Math.round(scopeAnswered.length / practiceList.length * 100) : 0;
+    const c = state.sessionCorrect;
+    const w = state.sessionWrong;
+    const total = state.queue.length;
+    const done = c + w;
+    const remain = total - state.queuePos - 1;
+    const acc = done > 0 ? Math.round(c / done * 100) + '%' : '—';
 
-  document.getElementById('stat-total').textContent = practiceList.length;
-  document.getElementById('stat-done').textContent = scopeAnswered.length;
-  document.getElementById('stat-correct').textContent = correctCount.length;
-  document.getElementById('stat-wrong').textContent = wrongCount.length;
-  document.getElementById('stat-rate').textContent = rate + '%';
-  document.getElementById('progress-fill').style.width = pct + '%';
-  document.getElementById('progress-label').textContent = scopeAnswered.length + '/' + practiceList.length;
-  document.getElementById('progress-pct').textContent = pct + '%';
+    document.getElementById('stat-done').textContent = done;
+    document.getElementById('stat-correct').textContent = c;
+    document.getElementById('stat-wrong').textContent = w;
+    document.getElementById('stat-rate').textContent = acc;
+    document.getElementById('stat-remain').textContent = Math.max(0, remain);
 }
 
-function escapeHtml(text) {
-  const div = document.createElement('div');
-  div.textContent = text;
-  return div.innerHTML;
+function updateStatsPanel() {
+    const c = state.sessionCorrect;
+    const w = state.sessionWrong;
+    const acc = (c + w) > 0 ? Math.round(c / (c + w) * 100) : 0;
+
+    let totalAnswered = Object.keys(state.answered).length;
+    let totalCorrect = Object.values(state.answered).filter(a => a.correct).length;
+    let totalWrong = totalAnswered - totalCorrect;
+
+    let html = '<div class="q-card">';
+    html += '<h3 style="margin-bottom:16px;color:var(--accent)">📊 本次练习统计</h3>';
+    html += '<div style="line-height:2;font-size:0.95em">';
+    html += '<div>✅ 本次正确：<strong style="color:var(--correct)">' + c + ' 题</strong></div>';
+    html += '<div>❌ 本次错误：<strong style="color:var(--wrong)">' + w + ' 题</strong></div>';
+    html += '<div>🎯 本次正确率：<strong style="color:var(--accent)">' + acc + '%</strong></div>';
+    html += '<div>📌 错题本：<strong style="color:var(--highlight)">' + state.wrongIds.size + ' 题</strong></div>';
+    html += '</div>';
+
+    // Per-topic stats
+    html += '<h3 style="margin:20px 0 12px;color:var(--accent)">📚 各专题统计</h3>';
+    TOPICS.forEach(t => {
+        const tqs = ALL_QUESTIONS.filter(q => q.topic === t.name);
+        const tAns = tqs.filter(q => state.answered[q.id]);
+        const tCor = tAns.filter(q => state.answered[q.id]?.correct);
+        const tRate = tAns.length > 0 ? Math.round(tCor.length / tAns.length * 100) : 0;
+        const pct = tAns.length > 0 ? Math.round(tAns.length / tqs.length * 100) : 0;
+        const barColor = tRate >= 70 ? 'var(--correct)' : tRate >= 40 ? 'var(--highlight)' : 'var(--wrong)';
+
+        html += '<div style="margin-bottom:12px">';
+        html += '<div style="display:flex;justify-content:space-between;margin-bottom:4px;font-size:0.9em">';
+        html += '<span>' + t.name + '</span>';
+        html += '<span style="color:var(--text3)">已做 ' + tAns.length + '/' + tqs.length + ' · 正确率 <span style="color:' + barColor + ';font-weight:600">' + tRate + '%</span></span>';
+        html += '</div>';
+        html += '<div class="progress-bar"><div class="progress-fill" style="width:' + pct + '%"></div></div>';
+        html += '</div>';
+    });
+
+    // Action buttons
+    html += '<div style="display:flex;gap:10px;margin-top:20px;flex-wrap:wrap">';
+    html += '<button class="btn btn-secondary" onclick="resetAll()">🗑️ 清除所有记录</button>';
+    html += '<button class="btn btn-secondary" onclick="resetWrong()">🔄 清除错题本</button>';
+    html += '</div>';
+    html += '</div>';
+
+    document.getElementById('stats-detail').innerHTML = html;
 }
 
-// Bank
+// ============================================================
+// 专题筛选
+// ============================================================
+function toggleTopicFilter() {
+    const el = document.getElementById('topic-filter');
+    el.classList.toggle('open');
+}
+
+function selectTopic(name, el) {
+    if (selectedTopic === name) {
+        selectedTopic = null;
+        selectedChapter = null;
+        el.classList.remove('active');
+        el.classList.remove('expanded');
+        const chGrid = el.nextElementSibling;
+        if (chGrid && chGrid.classList.contains('chapter-grid')) chGrid.remove();
+    } else {
+        selectedTopic = name;
+        selectedChapter = null;
+        document.querySelectorAll('.topic-item').forEach(e => {
+            e.classList.remove('active');
+            e.classList.remove('expanded');
+            const ch = e.nextElementSibling;
+            if (ch && ch.classList.contains('chapter-grid')) ch.remove();
+        });
+        el.classList.add('active');
+        const isExpanded = el.classList.contains('expanded');
+        if (!isExpanded) {
+            el.classList.add('expanded');
+            const topic = TOPICS.find(t => t.name === name);
+            if (topic && topic.chapters && topic.chapters.length > 0) {
+                let chHtml = '<div class="chapter-grid">';
+                topic.chapters.forEach(ch => {
+                    chHtml += '<div class="chapter-item" onclick="selectChapter(\'' + ch.name.replace(/'/g, "\\'") + '\', this, event)">';
+                    chHtml += '<span>' + ch.name + '</span>';
+                    chHtml += '<span style="color:var(--text3);font-size:0.8rem">' + ch.count + '题</span>';
+                    chHtml += '</div>';
+                });
+                chHtml += '</div>';
+                el.insertAdjacentHTML('afterend', chHtml);
+            }
+        } else {
+            el.classList.remove('expanded');
+            const chGrid = el.nextElementSibling;
+            if (chGrid && chGrid.classList.contains('chapter-grid')) chGrid.remove();
+        }
+    }
+    document.querySelectorAll('.filter-bar .filter-btn').forEach(b => b.classList.remove('active'));
+    restartPractice();
+}
+
+function selectChapter(chapterName, el, event) {
+    event.stopPropagation();
+    if (selectedChapter === chapterName) {
+        selectedChapter = null;
+        el.classList.remove('active');
+    } else {
+        selectedChapter = chapterName;
+        document.querySelectorAll('.chapter-item').forEach(e => e.classList.remove('active'));
+        el.classList.add('active');
+    }
+    restartPractice();
+}
+
+// ============================================================
+// 题库浏览
+// ============================================================
 function renderBank() {
-  // Topic bar
-  const bar = document.getElementById('bank-topic-bar');
-  let html = '<button class="filter-btn active" onclick="bankFilter(null,this)">全部</button>';
-  TOPICS.forEach(t => {
-    html += '<button class="filter-btn" onclick="bankFilter(\'' + t.name.replace(/'/g,"\\'") + '\',this)">' + t.name + ' (' + t.count + ')</button>';
-  });
-  bar.innerHTML = html;
-
-  filterBank();
+    const bar = document.getElementById('bank-topic-bar');
+    let html = '<button class="filter-btn active" onclick="bankFilter(null,this)">全部</button>';
+    TOPICS.forEach(t => {
+        html += '<button class="filter-btn" onclick="bankFilter(\'' + t.name.replace(/'/g, "\\'") + '\',this)">' + t.name + ' (' + t.count + ')</button>';
+    });
+    bar.innerHTML = html;
+    filterBank();
 }
 
 let bankTopicFilter = null;
 function bankFilter(topic, btn) {
-  bankTopicFilter = topic;
-  document.querySelectorAll('#bank-topic-bar .filter-btn').forEach(b=>b.classList.remove('active'));
-  if (btn) btn.classList.add('active');
-  filterBank();
+    bankTopicFilter = topic;
+    document.querySelectorAll('#bank-topic-bar .filter-btn').forEach(b => b.classList.remove('active'));
+    if (btn) btn.classList.add('active');
+    filterBank();
 }
 
 function filterBank() {
-  const search = document.getElementById('search-input').value.toLowerCase();
-  let list = ALL_QUESTIONS;
-  if (bankTopicFilter) list = list.filter(q=>q.topic === bankTopicFilter);
-  if (search) list = list.filter(q=>q.question.toLowerCase().includes(search) || (q.explanation||'').toLowerCase().includes(search));
+    const search = document.getElementById('search-input').value.toLowerCase();
+    let list = ALL_QUESTIONS;
+    if (bankTopicFilter) list = list.filter(q => q.topic === bankTopicFilter);
+    if (search) list = list.filter(q => q.question.toLowerCase().includes(search) || (q.explanation || '').toLowerCase().includes(search));
 
-  const container = document.getElementById('bank-container');
-  if (list.length === 0) {
-    container.innerHTML = '<div style="text-align:center;padding:40px;color:var(--text3)">没有找到匹配的题目</div>';
-    return;
-  }
-  let html = '';
-  list.forEach(q => {
-    const tagClass = q.type === 'multiple' ? 'multi' : 'single';
-    const tagText = q.type === 'multiple' ? '多选' : '单选';
-    html += '<div class="bank-item" onclick="jumpToQuestion(' + q.id + ')">';
-    html += '<div class="bank-q">' + escapeHtml(q.question.substring(0, 100)) + (q.question.length > 100 ? '...' : '') + '</div>';
-    html += '<div class="bank-meta"><span class="q-tag ' + tagClass + '" style="margin-right:6px">' + tagText + '</span>#' + q.id + ' · ' + (q.topic||'') + '</div>';
-    html += '</div>';
-  });
-  container.innerHTML = html + '<div style="text-align:center;padding:12px;color:var(--text3)">共 ' + list.length + ' 道题</div>';
+    const container = document.getElementById('bank-container');
+    if (list.length === 0) {
+        container.innerHTML = '<div style="text-align:center;padding:40px;color:var(--text3)">没有找到匹配的题目</div>';
+        return;
+    }
+    let html = '';
+    list.forEach(q => {
+        const tagClass = q.type === 'multiple' ? 'multi' : 'single';
+        const tagText = q.type === 'multiple' ? '多选' : '单选';
+        html += '<div class="bank-item" onclick="jumpToQuestion(' + q.id + ')">';
+        html += '<div class="bank-q">' + escHtml(q.question.substring(0, 100)) + (q.question.length > 100 ? '...' : '') + '</div>';
+        html += '<div class="bank-meta"><span class="q-tag ' + tagClass + '" style="margin-right:6px">' + tagText + '</span>#' + q.id + ' · ' + (q.topic || '') + '</div>';
+        html += '</div>';
+    });
+    container.innerHTML = html + '<div style="text-align:center;padding:12px;color:var(--text3)">共 ' + list.length + ' 道题</div>';
 }
 
 function jumpToQuestion(qid) {
-  switchTab('practice');
-  // Find the question in current practice list
-  const idx = practiceList.findIndex(q=>q.id===qid);
-  if (idx >= 0) {
-    const el = document.getElementById('qcard-' + qid);
-    if (el) el.scrollIntoView({behavior:'smooth', block:'center'});
-  } else {
-    // Reset scope to all and find
-    currentScope = 'all';
-    selectedTopic = null;
-    document.querySelectorAll('.filter-bar .filter-btn').forEach(b=>b.classList.remove('active'));
-    document.querySelector('.filter-bar .filter-btn').classList.add('active');
-    startPractice();
-    setTimeout(()=>{
-      const el = document.getElementById('qcard-' + qid);
-      if (el) el.scrollIntoView({behavior:'smooth', block:'center'});
-    }, 100);
-  }
+    // 切换到练习模式，定位到该题
+    const idx = state.queue.findIndex(id => id === qid);
+    if (idx >= 0) {
+        state.queuePos = idx;
+        selectedOptions = [];
+        switchTab('practice');
+        renderQuestion(state.queue[state.queuePos]);
+    } else {
+        // 重建队列，以该题开头
+        state.filter = 'all';
+        selectedTopic = null;
+        selectedChapter = null;
+        state.queue = buildQueueIds();
+        const newIdx = state.queue.findIndex(id => id === qid);
+        if (newIdx >= 0) state.queuePos = newIdx;
+        selectedOptions = [];
+        switchTab('practice');
+        renderQuestion(state.queue[state.queuePos]);
+    }
 }
 
-// Stats tab
-function renderStatsDetail() {
-  let totalAnswered = Object.keys(answered).length;
-  let totalCorrect = Object.values(answered).filter(a=>a.correct).length;
-  let totalWrong = totalAnswered - totalCorrect;
-  let rate = totalAnswered > 0 ? Math.round(totalCorrect/totalAnswered*100) : 0;
+// ============================================================
+// Tab 切换
+// ============================================================
+function switchTab(name) {
+    document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
+    document.querySelectorAll('.tab-content').forEach(t => t.classList.remove('active'));
+    // 找到对应的tab按钮
+    const tabs = document.querySelectorAll('.tab');
+    const tabNames = ['practice', 'bank', 'stats'];
+    const idx = tabNames.indexOf(name);
+    if (idx >= 0 && tabs[idx]) tabs[idx].classList.add('active');
+    document.getElementById('tab-' + name).classList.add('active');
 
-  let html = '<div class="q-card">';
-  html += '<h3 style="margin-bottom:16px;color:var(--accent)">📊 总体统计</h3>';
-  html += '<div class="stats-bar" style="margin-bottom:20px">';
-  html += '<div class="stat-item"><div class="stat-value">' + TOTAL + '</div><div class="stat-label">总题数</div></div>';
-  html += '<div class="stat-item"><div class="stat-value">' + totalAnswered + '</div><div class="stat-label">已练习</div></div>';
-  html += '<div class="stat-item"><div class="stat-value" style="color:var(--correct)">' + totalCorrect + '</div><div class="stat-label">正确</div></div>';
-  html += '<div class="stat-item"><div class="stat-value" style="color:var(--wrong)">' + totalWrong + '</div><div class="stat-label">错误</div></div>';
-  html += '<div class="stat-item"><div class="stat-value">' + rate + '%</div><div class="stat-label">正确率</div></div>';
-  html += '</div>';
-
-  // Per-topic stats
-  html += '<h3 style="margin-bottom:12px;color:var(--accent)">📚 各专题统计</h3>';
-  TOPICS.forEach(t => {
-    const tqs = ALL_QUESTIONS.filter(q=>q.topic===t.name);
-    const tAns = tqs.filter(q=>answered[q.id]);
-    const tCor = tAns.filter(q=>answered[q.id]?.correct);
-    const tRate = tAns.length > 0 ? Math.round(tCor.length/tAns.length*100) : 0;
-    const pct = tAns.length > 0 ? Math.round(tAns.length/tqs.length*100) : 0;
-    const barColor = tRate >= 70 ? 'var(--correct)' : tRate >= 40 ? 'var(--highlight)' : 'var(--wrong)';
-
-    html += '<div style="margin-bottom:12px">';
-    html += '<div style="display:flex;justify-content:space-between;margin-bottom:4px;font-size:0.9em">';
-    html += '<span>' + t.name + '</span>';
-    html += '<span style="color:var(--text3)">已做 ' + tAns.length + '/' + tqs.length + ' · 正确率 <span style="color:' + barColor + ';font-weight:600">' + tRate + '%</span></span>';
-    html += '</div>';
-    html += '<div class="progress-bar"><div class="progress-fill" style="width:' + pct + '%"></div></div>';
-    html += '</div>';
-  });
-
-  // Action buttons
-  html += '<div style="display:flex;gap:10px;margin-top:20px;flex-wrap:wrap">';
-  html += '<button class="filter-btn" onclick="resetAll()" style="padding:10px 20px;font-size:0.95em">🗑️ 清除所有记录</button>';
-  html += '<button class="filter-btn" onclick="resetWrong()" style="padding:10px 20px;font-size:0.95em">🔄 清除错题本</button>';
-  html += '</div>';
-
-  html += '</div>';
-  document.getElementById('stats-detail').innerHTML = html;
+    if (name === 'bank') renderBank();
+    if (name === 'stats') updateStatsPanel();
 }
 
+// ============================================================
+// 重置
+// ============================================================
 function resetAll() {
-  if (!confirm('确定清除所有练习记录？此操作不可撤销。')) return;
-  answered = {};
-  wrongSet = new Set();
-  localStorage.removeItem('rl_wrong');
-  startPractice();
-  renderStatsDetail();
+    if (!confirm('确定清除所有练习记录？此操作不可撤销。')) return;
+    state.answered = {};
+    state.wrongIds = new Set();
+    localStorage.removeItem('related_law_state');
+    restartPractice();
+    updateStatsPanel();
 }
 
 function resetWrong() {
-  if (!confirm('确定清除错题本？')) return;
-  wrongSet = new Set();
-  saveWrong();
-  startPractice();
-  renderStatsDetail();
+    if (!confirm('确定清除错题本？')) return;
+    state.wrongIds = new Set();
+    saveState();
+    restartPractice();
+    updateStatsPanel();
 }
 
-// Tab switching
-function switchTab(name) {
-  document.querySelectorAll('.tab').forEach(t=>t.classList.remove('active'));
-  document.querySelectorAll('.tab-content').forEach(t=>t.classList.remove('active'));
-  event.target.classList.add('active');
-  document.getElementById('tab-' + name).classList.add('active');
-
-  if (name === 'bank') renderBank();
-  if (name === 'stats') renderStatsDetail();
-}
-
-// Scroll to top button
-window.addEventListener('scroll', () => {
-  const btn = document.getElementById('scroll-top');
-  btn.classList.toggle('show', window.scrollY > 400);
-});
-
-// Init
+// ============================================================
+// 初始化
+// ============================================================
 function init() {
-  // Render topic grid
-  const grid = document.getElementById('topic-grid');
-  let html = '';
-  TOPICS.forEach(t => {
-    html += '<div class="topic-item" onclick="selectTopic(\'' + t.name.replace(/'/g,"\\'") + '\',this)">';
-    html += '<span class="t-name">' + t.name + '</span>';
-    html += '<span class="t-count">' + t.count + '题</span>';
-    html += '</div>';
-  });
-  grid.innerHTML = html;
+    // Render topic grid
+    const grid = document.getElementById('topic-grid');
+    let html = '';
+    TOPICS.forEach(t => {
+        html += '<div class="topic-item" onclick="selectTopic(\'' + t.name.replace(/'/g, "\\'") + '\',this)">';
+        html += '<span class="t-name">' + t.name + '</span>';
+        html += '<span class="t-count">' + t.count + '题</span>';
+        html += '</div>';
+    });
+    grid.innerHTML = html;
 
-  startPractice();
+    // 加载上次状态
+    loadState();
+
+    // 恢复过滤按钮状态
+    if (state.filter !== 'all') {
+        document.querySelectorAll('.filter-bar .filter-btn').forEach(b => b.classList.remove('active'));
+        document.querySelectorAll('.filter-bar .filter-btn').forEach(b => {
+            if ((state.filter === 'single' && b.textContent.includes('单选')) ||
+                (state.filter === 'multi' && b.textContent.includes('多选')) ||
+                (state.filter === 'wrong' && b.textContent.includes('错题')) ||
+                (state.filter === 'random50' && b.textContent.includes('随机'))) {
+                b.classList.add('active');
+            }
+        });
+    }
+
+    // 如果有保存的队列，直接恢复到上次位置
+    if (state.queue.length > 0) {
+        document.getElementById('q-total-label').textContent = '共 ' + state.queue.length + ' 题';
+        renderQuestion(state.queue[state.queuePos]);
+    } else {
+        restartPractice();
+    }
 }
 
 init();
