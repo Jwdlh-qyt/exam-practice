@@ -297,7 +297,24 @@
             font-size: 2rem; font-weight: 700; color: var(--accent);
             font-family: 'JetBrains Mono', monospace;
         }
-    </style>
+    
+/* Topic filter */
+.topic-filter { max-height: 0; overflow: hidden; transition: max-height 0.3s ease; }
+.topic-filter.open { max-height: 800px; margin-bottom: 16px; }
+.topic-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(220px, 1fr)); gap: 8px; padding: 12px 0; }
+.topic-item {
+    padding: 10px 14px; border-radius: 8px; border: 1px solid var(--border);
+    background: var(--bg-card); cursor: pointer;
+    transition: all 0.2s ease; display: flex; justify-content: space-between; align-items: center;
+}
+.topic-item:hover { border-color: var(--accent); background: var(--bg-hover); }
+.topic-item.active { border-color: var(--accent); background: var(--accent-dim); }
+.t-name { font-size: 0.9rem; }
+.t-count { font-size: 0.8rem; color: var(--text-muted); }
+.topic-item.active .t-count { color: var(--accent); }
+@media (max-width: 600px) { .topic-grid { grid-template-columns: 1fr; } }
+
+</style>
 </head>
 <body>
 <div class="container">
@@ -350,8 +367,14 @@
             <button class="filter-btn" onclick="setFilter('multi', this)">仅多选</button>
             <button class="filter-btn" onclick="setFilter('wrong', this)">错题重练</button>
             <button class="filter-btn" onclick="setFilter('rand50', this)">随机50题</button>
+            <button class="filter-btn" onclick="toggleTopicFilter()">按专题</button>
         </div>
 
+
+
+        <div id="topic-filter" class="topic-filter">
+            <div class="topic-grid" id="topic-grid"></div>
+        </div>
         <div class="progress-wrapper">
             <div class="progress-info">
                 <span id="q-index-label">第 1 题</span>
@@ -801,6 +824,65 @@ function switchTab(tab) {
 // ============================================================
 loadState();
 restartPractice();
+
+// ============================================================
+// 专题筛选
+// ============================================================
+const TOPICS = [{"name": "专题八 不", "count": 75}, {"name": "专题十二 对请求", "count": 21}, {"name": "专题十二 对请求书、委托书", "count": 492}, {"name": "未分类", "count": 187}];
+let selectedTopic = null;
+
+function toggleTopicFilter() {
+    const el = document.getElementById('topic-filter');
+    el.classList.toggle('open');
+}
+
+function selectTopic(name, el) {
+    if (selectedTopic === name) {
+        selectedTopic = null;
+        el.classList.remove('active');
+    } else {
+        selectedTopic = name;
+        document.querySelectorAll('.topic-item').forEach(e => e.classList.remove('active'));
+        el.classList.add('active');
+    }
+    // Deactivate other filter buttons
+    document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
+    restartPractice();
+}
+
+// Render topic grid
+function initTopicGrid() {
+    const grid = document.getElementById('topic-grid');
+    let html = '';
+    TOPICS.forEach(t => {
+        html += '<div class="topic-item" onclick="selectTopic(\'' + t.name.replace(/'/g, "\\'") + '\',this)">';
+        html += '<span class="t-name">' + t.name + '</span>';
+        html += '<span class="t-count">' + t.count + '题</span>';
+        html += '</div>';
+    });
+    grid.innerHTML = html;
+}
+
+// Override buildQueueIds to support topic filter
+const _origBuildQueueIds = buildQueueIds;
+buildQueueIds = function(filter) {
+    let pool = [];
+    if (filter === 'all') pool = QUESTIONS;
+    else if (filter === 'single') pool = QUESTIONS.filter(q => q.type === 'single');
+    else if (filter === 'multi') pool = QUESTIONS.filter(q => q.type === 'multiple');
+    else if (filter === 'wrong') pool = QUESTIONS.filter(q => state.wrongIds.has(q.id));
+    else if (filter === 'rand50') {
+        const shuffled = [...QUESTIONS].sort(() => Math.random() - 0.5);
+        pool = shuffled.slice(0, 50);
+    }
+    if (selectedTopic !== null) {
+        pool = pool.filter(q => q.topic === selectedTopic);
+    }
+    return pool.map(q => q.id);
+};
+
+initTopicGrid();
+
 </script>
 </body>
 </html>
