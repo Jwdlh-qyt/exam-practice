@@ -2082,7 +2082,7 @@ function renderPractice() {
         <span class="topic-chip ${st.topic===null?activeFbtnCls:''}" onclick="selectTopic(null,this)">全部专题</span>`;
     for (const t of topics) {
       const cnt = t.idEnd - t.idStart + 1;
-      topicHtml += `<span class="topic-chip ${st.topic===t.name?activeFbtnCls:''}" onclick="selectTopic('${t.name}',this)">{t.name} ({cnt})</span>`;
+      topicHtml += `<span class="topic-chip ${st.topic===t.name?activeFbtnCls:''}" onclick="selectTopic('${t.name}',this)">${t.name} (${cnt})</span>`;
     }
     topicHtml += '</div></div>';
   } else {
@@ -2092,7 +2092,7 @@ function renderPractice() {
         <span class="topic-chip ${st.topic===null?activeFbtnCls:''}" onclick="selectTopic(null,this)">全部专题</span>`;
     for (const t of topics) {
       const cnt = qs.filter(q => q.topic === t.name).length;
-      topicHtml += `<span class="topic-chip ${st.topic===t.name?activeFbtnCls:''}" onclick="selectTopic('${t.name}',this)">{t.name} ({cnt})</span>`;
+      topicHtml += `<span class="topic-chip ${st.topic===t.name?activeFbtnCls:''}" onclick="selectTopic('${t.name}',this)">${t.name} (${cnt})</span>`;
     }
     topicHtml += '</div>';
     
@@ -2103,7 +2103,7 @@ function renderPractice() {
         topicHtml += '<div class="topic-grid" style="margin-top:8px">';
         topicHtml += `<span class="topic-chip ${!st.chapter?activeFbtnCls:''}" onclick="selectChapter(null,this)">全部章节</span>`;
         for (const ch of selTopic.chapters) {
-          topicHtml += `<span class="topic-chip ${st.chapter===ch?activeFbtnCls:''}" onclick="selectChapter('${ch}',this)">{ch}</span>`;
+          topicHtml += `<span class="topic-chip ${st.chapter===ch?activeFbtnCls:''}" onclick="selectChapter('${ch}',this)">${ch}</span>`;
         }
         topicHtml += '</div>';
       }
@@ -2383,7 +2383,7 @@ function renderBank() {
     topicFilter += `<button class="fbtn ${activeFbtnCls}" onclick="bankFilter(null,this)" data-bt="all">全部</button>`;
     for (const t of topics) {
       const cnt = qs.filter(q => q.topic === t.name).length;
-      topicFilter += `<button class="fbtn" onclick="bankFilter('${t.name}',this)" data-bt="${t.name}">${t.name}({cnt})</button>`;
+      topicFilter += `<button class="fbtn" onclick="bankFilter('${t.name}',this)" data-bt="${t.name}">${t.name}(${cnt})</button>`;
     }
     topicFilter += '</div>';
   }
