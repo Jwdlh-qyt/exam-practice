@@ -77,7 +77,7 @@ h1{font-size:2rem;font-weight:700;background:linear-gradient(135deg,var(--text),
 .topic-panel{display:none;margin-bottom:16px;padding:16px;background:var(--card);border:1px solid var(--border);border-radius:var(--r2)}
 .topic-panel.show{display:block}
 .topic-grid{display:flex;flex-wrap:wrap;gap:6px;margin-top:10px}
-.topic-chip{padding:5px 12px;border-radius:16px;background:var(--bg2);border:1px solid var(--border);color:var(--text2);font-size:0.78rem;cursor:pointer;transition:all 0.2s}
+.topic-chip{padding:5px 12px;border-radius:16px;background:var(--bg2);border:1px solid var(--border);color:var(--text2);font-size:0.78rem;cursor:pointer;transition:all 0.2s;max-width:100%;overflow:hidden;text-overflow:ellipsis;white-space:normal;line-height:1.4}
 .topic-chip:hover{border-color:var(--accent);color:var(--accent)}
 .topic-chip.active{background:var(--accent-dim);border-color:var(--accent);color:var(--accent);font-weight:600}
 
@@ -1877,8 +1877,8 @@ const LS_PREFIX = 'exam_practice_';
 let currentMain = 'patent'; // patent | related
 let currentSub = 'practice'; // practice | bank | stats
 
-// Per-section state
-let state = {
+  // Per-section state
+  let state = {
   patent: { filter:'all', topic:null, queue:[], pos:0, sessionOk:0, sessionErr:0 },
   related: { filter:'all', topic:null, chapter:null, queue:[], pos:0, sessionOk:0, sessionErr:0 }
 };
@@ -1890,21 +1890,48 @@ let answers = {};
 // Wrong IDs per section
 let wrongIds = { patent: new Set(), related: new Set() };
 
+// Per-filter position memory: { "section_filter_topic_chapter": pos }
+let posMemory = {};
+
 // Selected options for current multi-select question
 let selectedOptions = [];
 
 // ============================================================
 // PERSISTENCE
 // ============================================================
+function getPosKey(section) {
+  const st = state[section];
+  const ch = st.chapter || 'null';
+  return section + '_' + st.filter + '_' + (st.topic || 'null') + '_' + ch;
+}
+
+function savePos() {
+  // Save current position to memory before switching
+  const section = currentMain;
+  posMemory[getPosKey(section)] = state[section].pos;
+}
+
+function restorePos(section) {
+  const key = getPosKey(section);
+  if (posMemory[key] !== undefined) {
+    state[section].pos = posMemory[key];
+  } else {
+    state[section].pos = 0;
+  }
+}
+
 function saveAll() {
   try {
+    // Save current position to memory
+    savePos();
     const data = {
       answers: answers,
       wrongIds_patent: [...wrongIds.patent],
       wrongIds_related: [...wrongIds.related],
-      // Save current position per section
-      state_patent: { filter: state.patent.filter, topic: state.patent.topic, pos: state.patent.pos, sessionOk: state.patent.sessionOk, sessionErr: state.patent.sessionErr },
-      state_related: { filter: state.related.filter, topic: state.related.topic, chapter: state.related.chapter, pos: state.related.pos, sessionOk: state.related.sessionOk, sessionErr: state.related.sessionErr },
+      posMemory: posMemory,
+      // Save current filter/topic state per section (not pos, that's in posMemory)
+      state_patent: { filter: state.patent.filter, topic: state.patent.topic, sessionOk: state.patent.sessionOk, sessionErr: state.patent.sessionErr },
+      state_related: { filter: state.related.filter, topic: state.related.topic, chapter: state.related.chapter, sessionOk: state.related.sessionOk, sessionErr: state.related.sessionErr },
     };
     localStorage.setItem(LS_PREFIX + 'data', JSON.stringify(data));
   } catch(e) { console.warn('Save failed', e); }
@@ -1919,12 +1946,15 @@ function loadAll() {
     if (data.answers) answers = data.answers;
     if (data.wrongIds_patent) wrongIds.patent = new Set(data.wrongIds_patent);
     if (data.wrongIds_related) wrongIds.related = new Set(data.wrongIds_related);
+    if (data.posMemory) posMemory = data.posMemory;
     
     if (data.state_patent) {
       Object.assign(state.patent, data.state_patent);
+      state.patent.pos = 0; // pos will be restored from posMemory after buildQueue
     }
     if (data.state_related) {
       Object.assign(state.related, data.state_related);
+      state.related.pos = 0;
     }
   } catch(e) { console.warn('Load failed', e); }
 }
@@ -2005,6 +2035,10 @@ function buildQueue() {
   if (st.pos >= st.queue.length) st.pos = 0;
   st.sessionOk = 0;
   st.sessionErr = 0;
+  
+  // Restore saved position for this specific filter/topic combination
+  restorePos(currentMain);
+  if (st.pos >= st.queue.length) st.pos = 0;
 }
 
 // ============================================================
@@ -2048,7 +2082,7 @@ function renderPractice() {
         <span class="topic-chip ${st.topic===null?activeFbtnCls:''}" onclick="selectTopic(null,this)">全部专题</span>`;
     for (const t of topics) {
       const cnt = t.idEnd - t.idStart + 1;
-      topicHtml += `<span class="topic-chip ${st.topic===t.name?activeFbtnCls:''}" onclick="selectTopic('${t.name}',this)">{t.name.substring(0,8)}.. ({cnt})</span>`;
+      topicHtml += `<span class="topic-chip ${st.topic===t.name?activeFbtnCls:''}" onclick="selectTopic('${t.name}',this)">{t.name} ({cnt})</span>`;
     }
     topicHtml += '</div></div>';
   } else {
@@ -2058,7 +2092,7 @@ function renderPractice() {
         <span class="topic-chip ${st.topic===null?activeFbtnCls:''}" onclick="selectTopic(null,this)">全部专题</span>`;
     for (const t of topics) {
       const cnt = qs.filter(q => q.topic === t.name).length;
-      topicHtml += `<span class="topic-chip ${st.topic===t.name?activeFbtnCls:''}" onclick="selectTopic('${t.name}',this)">{t.name.substring(0,8)}.. ({cnt})</span>`;
+      topicHtml += `<span class="topic-chip ${st.topic===t.name?activeFbtnCls:''}" onclick="selectTopic('${t.name}',this)">{t.name} ({cnt})</span>`;
     }
     topicHtml += '</div>';
     
@@ -2292,8 +2326,8 @@ function toggleExpl() {
 }
 
 function setFilter(f, btn) {
+  savePos(); // Remember current position before switching
   state[currentMain].filter = f;
-  state[currentMain].pos = 0;
   selectedOptions = [];
   buildQueue();
   saveAll();
@@ -2306,9 +2340,9 @@ function toggleTopicPanel() {
 }
 
 function selectTopic(name, el) {
+  savePos(); // Remember current position before switching
   state[currentMain].topic = name;
   state[currentMain].chapter = null;
-  state[currentMain].pos = 0;
   selectedOptions = [];
   buildQueue();
   saveAll();
@@ -2316,8 +2350,8 @@ function selectTopic(name, el) {
 }
 
 function selectChapter(name, el) {
+  savePos(); // Remember current position before switching
   state[currentMain].chapter = name;
-  state[currentMain].pos = 0;
   selectedOptions = [];
   buildQueue();
   saveAll();
@@ -2341,7 +2375,7 @@ function renderBank() {
     topicFilter = '<div class="filter-row"><span class="filter-label">专题：</span>';
     topicFilter += `<button class="fbtn ${activeFbtnCls}" onclick="bankFilter(null,this)" data-bt="all">全部</button>`;
     for (const t of topics) {
-      topicFilter += `<button class="fbtn" onclick="bankFilter('${t.name}',this)" data-bt="${t.name}">${t.name.substring(0,6)}..</button>`;
+      topicFilter += `<button class="fbtn" onclick="bankFilter('${t.name}',this)" data-bt="${t.name}">${t.name}</button>`;
     }
     topicFilter += '</div>';
   } else {
@@ -2349,7 +2383,7 @@ function renderBank() {
     topicFilter += `<button class="fbtn ${activeFbtnCls}" onclick="bankFilter(null,this)" data-bt="all">全部</button>`;
     for (const t of topics) {
       const cnt = qs.filter(q => q.topic === t.name).length;
-      topicFilter += `<button class="fbtn" onclick="bankFilter('${t.name}',this)" data-bt="${t.name}">${t.name.substring(0,6)}..({cnt})</button>`;
+      topicFilter += `<button class="fbtn" onclick="bankFilter('${t.name}',this)" data-bt="${t.name}">${t.name}({cnt})</button>`;
     }
     topicFilter += '</div>';
   }
